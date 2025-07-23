@@ -1,0 +1,62 @@
+# Node modules (NUNCA deve ir pro Git)
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ambiente
+.env
+.env.*  # .env.dev, .env.local, etc
+
+# Cache
+.cache/
+.tmp/
+temp/
+
+# Build / Dist
+dist/
+build/
+out/
+coverage/
+
+# Testes (opcional)
+*.lcov
+coverage/
+
+# VSCode
+.vscode/
+
+# PM2 (gerenciador de processos, se usado)
+pids/
+*.pid
+*.seed
+
+# IDEs / editores
+.idea/
+*.sw?
+
+# TypeScript (se estiver usando)
+*.tsbuildinfo
+
+# Fastify plugins auto-import (caso esteja usando)
+.fastify/
+
+# Banco SQLite (se usado em dev)
+*.sqlite
+*.sqlite3
+
+# Docker (se estiver usando Docker volumes locais)
+docker-data/
+
+# Outras dependências geradas
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
