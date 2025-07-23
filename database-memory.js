@@ -6,9 +6,10 @@ export class DatabaseMemory{
 
     // Set (não aceita valores duplicados), Map (API muito mais legal e funciona com chave-valor)
 
-    list(){
+    list(search){  // o search é opcional
         // Array.from converte em Array (para voltar a informação corretamente no GET)
-        return Array.from(this.#videos.entries()).map((videoArray) =>{
+        return Array.from(this.#videos.entries())
+        .map((videoArray) =>{
             const id = videoArray[0]
             const data = videoArray[1]
 
@@ -17,6 +18,13 @@ export class DatabaseMemory{
                 ...data
             }
         })  
+        .filter(video => {
+            if (search) {
+                return video.title.includes(search)   // caso tenha aquele search, retorna ele. retorna true se não tiver search (todos os vídeos, basicamente)
+            }
+
+            return true
+        })
     }
 
     create(video) {

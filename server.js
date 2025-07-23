@@ -44,8 +44,11 @@ server.post('/videos', (request, reply) => {  // reply é o mesmo que o response
     return reply.status(201).send()
 })
 
-server.get('/videos', () => {
-    const videos = database.list()
+server.get('/videos', (request) => {
+    const search = request.query.search  // Query params (também na URL)
+    // console.log(search)  // Vai printar "node" sempre que der um GET  com query param
+
+    const videos = database.list(search)  // search é opcional
 
     return videos  // O Fastify trata isso pra gente como um reply/response
 })
