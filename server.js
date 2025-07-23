@@ -28,31 +28,50 @@ const database = new DatabaseMemory()
 // por isso foi criado o routes.http
 
 
+// Request Body (p/ métodos POST e PUT) -> para enviar os dados dos vídeos (diversificar os dados)
 
 server.post('/videos', (request, reply) => {  // reply é o mesmo que o response explicado lá em cima
-    database.create({
-        title: "Video 01",
-        description: "Esse é o video 01",
-        duration: 180,
-    })
+    const { title, description, duration } = request.body
 
-    console.log(database.list())
+    database.create({
+        // Short syntax - mesma coisa que { title: title }, etc.
+        title,
+        description,
+        duration,
+    })
 
     // Geralmente em operações de criação, deleção e update o response é vazio (mas precisa dele pra mostrar que a operação foi feita)
     return reply.status(201).send()
 })
 
 server.get('/videos', () => {
-    return 'Hello Seocodes!'
+    const videos = database.list()
+
+    return videos  // O Fastify trata isso pra gente como um reply/response
 })
 
 // Route Parameter -> :id
-server.put('/videos/:id', () => {
-    return 'Hello Node.js'
+server.put('/videos/:id', (request, reply) => {
+    const { title, description, duration } = request.body
+    const videoId = request.params.id
+
+    database.update(videoId, {
+        title,
+        description,
+        duration
+    })
+
+    // status 204 -> teve sucesso mas não tem conteúdo na resposta
+    return reply.status(204).send()
 })
 
-server.delete('/videos/:id', () => {
-    return 'Hello Node.js'
+server.delete('/videos/:id', (request, reply) => {
+    const videoId = request.params.id
+
+    database.delete(videoId)
+
+    // status 204 -> teve sucesso mas não tem conteúdo na resposta
+    return reply.status(204).send()
 })
 
 server.listen({

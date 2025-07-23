@@ -7,7 +7,16 @@ export class DatabaseMemory{
     // Set (não aceita valores duplicados), Map (API muito mais legal e funciona com chave-valor)
 
     list(){
-        return this.#videos.values()  // não vai retornar com os IDs (chaves)
+        // Array.from converte em Array (para voltar a informação corretamente no GET)
+        return Array.from(this.#videos.entries()).map((videoArray) =>{
+            const id = videoArray[0]
+            const data = videoArray[1]
+
+            return{
+                id,
+                ...data
+            }
+        })  
     }
 
     create(video) {
