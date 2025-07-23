@@ -2,7 +2,7 @@
 
 // import { createServer } from 'node:http'
 
-// Request -> obter dados da requisição que o usuário faz pro servidor http
+// Request -> requisição que o usuário faz pro servidor http
 // Response -> devolve uma resposta para quem chama a API
 
 // const server = createServer((request, response) => {  
@@ -53,7 +53,7 @@ server.get('/videos', () => {
 // Route Parameter -> :id
 server.put('/videos/:id', (request, reply) => {
     const { title, description, duration } = request.body
-    const videoId = request.params.id
+    const videoId = request.params.id  // valor que vem da URL
 
     database.update(videoId, {
         title,
@@ -66,7 +66,7 @@ server.put('/videos/:id', (request, reply) => {
 })
 
 server.delete('/videos/:id', (request, reply) => {
-    const videoId = request.params.id
+    const videoId = request.params.id  // valor que vem da URL
 
     database.delete(videoId)
 
