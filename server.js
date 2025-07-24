@@ -80,5 +80,6 @@ server.delete('/videos/:id', (request, reply) => {
 })
 
 server.listen({
-    port: 3333,
+    host: '0.0.0.0',
+    port: process.env.PORT ?? 3333, // Roda numa port variável (pois fiz deploy com Render) e se não existir vai na 3333
 })
