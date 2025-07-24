@@ -18,10 +18,12 @@
 // Fastify = framework que traz uma forma de separar a aplicação em várias rotas (mapeamento de rotas) 
 // de acordo com o que o usuário estiver acessando
 import { fastify } from 'fastify'
-import { DatabaseMemory } from './database-memory.js'
+// import { DatabaseMemory } from './database-memory.js'
+import { DatabasePostgres } from './database-postgres.js'
 
 const server = fastify()
-const database = new DatabaseMemory()
+// const database = new DatabaseMemory()
+const database = new DatabasePostgres()
 
 // Métodos HTTP: GET, POST, PUT, DELETE, PATCH
 // obs: GET é o único método que dá pra testar pelo browser (quando a gente entra numa rota, o navegador sempre utiliza o método GET)
@@ -30,10 +32,10 @@ const database = new DatabaseMemory()
 
 // Request Body (p/ métodos POST e PUT) -> para enviar os dados dos vídeos (diversificar os dados)
 
-server.post('/videos', (request, reply) => {  // reply é o mesmo que o response explicado lá em cima
+server.post('/videos', async (request, reply) => {  // reply é o mesmo que o response explicado lá em cima
     const { title, description, duration } = request.body
 
-    database.create({
+    await database.create({
         // Short syntax - mesma coisa que { title: title }, etc.
         title,
         description,
@@ -44,21 +46,21 @@ server.post('/videos', (request, reply) => {  // reply é o mesmo que o response
     return reply.status(201).send()
 })
 
-server.get('/videos', (request) => {
+server.get('/videos', async (request) => {
     const search = request.query.search  // Query params (também na URL)
     // console.log(search)  // Vai printar "node" sempre que der um GET  com query param
 
-    const videos = database.list(search)  // search é opcional
+    const videos = await database.list(search)  // search é opcional
 
     return videos  // O Fastify trata isso pra gente como um reply/response
 })
 
 // Route Parameter -> :id
-server.put('/videos/:id', (request, reply) => {
+server.put('/videos/:id', async (request, reply) => {
     const { title, description, duration } = request.body
     const videoId = request.params.id  // valor que vem da URL
 
-    database.update(videoId, {
+    await database.update(videoId, {
         title,
         description,
         duration
